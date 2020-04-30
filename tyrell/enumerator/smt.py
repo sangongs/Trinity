@@ -95,7 +95,7 @@ class SmtEnumerator(Enumerator):
         for x in range(0, len(self.nodes)):
             for p in self.spec.productions():
                 # FIXME: improve empty integration
-                if p.is_function() and str(p).find('Empty') == -1:
+                if p.is_function() and str(p).find('Empty') == -1 and not p.name.startswith("const"):
                     ctr = Implies(
                         self.variables[x] == p.id, self.variables_fun[x] == 1)
                     solver.add(ctr)

@@ -43,6 +43,8 @@ class PostOrderInterpreter(Interpreter):
                 in_values = [self.visit_with_context(
                     x) for x in apply_node.args]
                 self._context.pop()
+                if None in in_values:
+                    return None
                 method_name = self._eval_method_name(apply_node.name)
                 method = getattr(self._interp, method_name,
                                  self._method_not_found)
