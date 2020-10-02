@@ -169,8 +169,8 @@ class ApplyNode(Node):
             raise ValueError(
                 'Cannot construct an AST internal node from a non-function production')
         if len(prod.rhs) != len(args):
-            msg = 'Argument count mismatch: expected {} but found {}'.format(
-                len(prod.rhs), len(args))
+            msg = 'Argument count of {} mismatch: expected {} but found {}'.format(
+                prod.name, len(prod.rhs), len(args))
             raise ValueError(msg)
         for index, (decl_ty, node) in enumerate(zip(prod.rhs, args)):
             actual_ty = node.type

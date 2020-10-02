@@ -230,7 +230,7 @@ class SmtEnumerator(Enumerator):
             raise ValueError(
                 'Depth cannot be non-positive: {}'.format(depth))
         self.depth = depth
-        if loc <= 0:
+        if loc < 0:
             raise ValueError(
                 'LOC cannot be non-positive: {}'.format(loc))
         self.loc = loc
@@ -239,12 +239,36 @@ class SmtEnumerator(Enumerator):
         self.model = None
         self.initLeafProductions()
         self.createVariables(self.z3_solver)
+#  And(n1 >= 0, n1 < 5),
+#  And(h1 >= 0, h1 <= 1),
+#  And(n2 >= 0, n2 < 5),
+#  And(h2 >= 0, h2 <= 1)
         self.createOutputConstraints(self.z3_solver)
+#  n1 == 4 
         self.createLocConstraints(self.z3_solver)
-        self.createInputConstraints(self.z3_solver)
+#  h1 + h2 == 0
+        # self.createInputConstraints(self.z3_solver)
+#  Or(n2 == 3, n1 == 3),
+#  Or(n2 == 4, n1 == 4)
         self.createFunctionConstraints(self.z3_solver)
+#  Implies(n1 == 0, h1 == 0),
+#  Implies(n1 == 1, h1 == 0),
+#  Implies(n1 == 2, h1 == 0),
+#  Implies(n1 == 3, h1 == 0),
+#  Implies(n1 == 4, h1 == 0),
+#  Implies(n2 == 0, h2 == 0),
+#  Implies(n2 == 1, h2 == 0),
+#  Implies(n2 == 2, h2 == 0),
+#  Implies(n2 == 3, h2 == 0),
+#  Implies(n2 == 4, h2 == 0)
         self.createLeafConstraints(self.z3_solver)
+#  Or(n2 == 4, Or(n2 == 3, Or(n2 == 2, Or(n2 == 1, n2 == 0))))
         self.createChildrenConstraints(self.z3_solver)
+#  Implies(n1 == 0, n2 == 0),
+#  Implies(n1 == 1, n2 == 0),
+#  Implies(n1 == 2, n2 == 0),
+#  Implies(n1 == 3, n2 == 0),
+#  Implies(n1 == 4, n2 == 0)
         self.optimizer = Optimizer(
             self.z3_solver, spec, self.variables, self.nodes)
         self.resolve_predicates()
@@ -312,6 +336,7 @@ class SmtEnumerator(Enumerator):
     def next(self):
         while True:
             self.model = self.optimizer.optimize(self.z3_solver)
+            # import pdb; pdb.set_trace()
             if self.model is not None:
                 return self.buildProgram()
             else:

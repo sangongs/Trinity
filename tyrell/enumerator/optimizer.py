@@ -223,6 +223,7 @@ class Optimizer:
         nb_sat = 0
         nb_unsat = 0
         # no optimization is defined
+        # import pdb; pdb.set_trace()
         if len(self.objective) == 0:
             res = solver.check()
             if res == sat:
