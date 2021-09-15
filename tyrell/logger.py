@@ -13,15 +13,16 @@ class _ColorFormatter(logging.Formatter):
     }
 
     def format(self, record):
-        if not record.exc_info:
-            level = record.levelname.lower()
-            msg = record.getMessage()
-            if level in self.colors:
-                prefix = click.style('[{}] '.format(level),
-                                     **self.colors[level])
-                msg = '\n'.join(prefix + x for x in msg.splitlines())
-            return msg
-        return logging.Formatter.format(self, record)
+        # if not record.exc_info:
+        #     level = record.levelname.lower()
+        #     msg = record.getMessage()
+        #     if level in self.colors:
+        #         prefix = click.style('[{}] '.format(level),
+        #                              **self.colors[level])
+        #         msg = '\n'.join(prefix + x for x in msg.splitlines())
+        #     return msg
+        # return logging.Formatter.format(self, record)
+        return logging.getLogger().handlers[0].formatter.format(record)
 
 
 class _ClickHandler(logging.Handler):
