@@ -230,7 +230,7 @@ class SmtEnumerator(Enumerator):
             raise ValueError(
                 'Depth cannot be non-positive: {}'.format(depth))
         self.depth = depth
-        if loc <= 0:
+        if loc < 0:
             raise ValueError(
                 'LOC cannot be non-positive: {}'.format(loc))
         self.loc = loc
@@ -241,7 +241,7 @@ class SmtEnumerator(Enumerator):
         self.createVariables(self.z3_solver)
         self.createOutputConstraints(self.z3_solver)
         self.createLocConstraints(self.z3_solver)
-        self.createInputConstraints(self.z3_solver)
+        # self.createInputConstraints(self.z3_solver)
         self.createFunctionConstraints(self.z3_solver)
         self.createLeafConstraints(self.z3_solver)
         self.createChildrenConstraints(self.z3_solver)
